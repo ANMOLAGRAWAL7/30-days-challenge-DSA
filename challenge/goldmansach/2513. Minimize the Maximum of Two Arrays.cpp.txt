@@ -1,5 +1,5 @@
 //Q link-->https://leetcode.com/problems/minimize-the-maximum-of-two-arrays/description/
-SOLUTION
+//SOLU
 class Solution {
 public:
     int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
