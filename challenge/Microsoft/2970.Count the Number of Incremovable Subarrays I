@@ -1,5 +1,5 @@
 //Q link-->https://leetcode.com/problems/count-the-number-of-incremovable-subarrays-i/description/
-//sol
+//solution
 class Solution {
 public:
     // time/space: O(n^3)/O(1)
