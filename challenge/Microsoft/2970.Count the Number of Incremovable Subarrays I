@@ -1,0 +1,28 @@
+//Q link-->https://leetcode.com/problems/count-the-number-of-incremovable-subarrays-i/description/
+//sol
+class Solution {
+public:
+    // time/space: O(n^3)/O(1)
+    int incremovableSubarrayCount(vector<int>& nums) {
+        int n = nums.size();
+        int result = 0;
+        for (int l = 0; l < n; l++) {
+            for (int r = l; r < n; r++) {
+                if (check(nums, l, r)) result++;
+            }
+        }
+        return result;
+    }
+private:
+    // time/space: O(n)/O(1)
+    bool check(vector<int>& nums, int l, int r) {
+        int n = nums.size();
+        int prev = INT_MIN;
+        for (int i = 0; i < n; i++) {
+            if ((l <= i) && (i <= r)) continue;
+            if (prev >= nums[i]) return false;
+            prev = nums[i];
+        }
+        return true;
+    }
+};
