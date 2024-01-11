@@ -1,0 +1,81 @@
+Q-link>> https://leetcode.com/problems/find-the-winner-of-the-circular-game/description/
+
+1. Brute Force Solution : CIRCULAR LINKED LIST
+/* Time Complexity : O(n*k)  Space Complexity : O(n) */
+If we look at the question, it says that the people are playing the game on a round table. That means, A Circular Linked List can be used to visualize the round table. We store 1,2,3,4,.......,n as the nodes of our List and go on deleting every kth node that we encounter. When we are left with only 1 node i.e. the head node, it is our WINNER. Since we are consuming extra space for Circular Linked List so, our Space Complexity goes to O(n).
+
+class Solution {
+public:
+    int helper(ListNode *head,int k){
+        ListNode *temp=head;  //For traversing through the List and delete every kth Node 
+        while(head->next!=head){   //Till the last Node remains in the list i.e. the winner
+            ListNode *pre=NULL;
+            for(int i=1; i<k; i++){
+                pre=temp;
+                temp=temp->next;
+            }
+            //Deletion procedure
+            if(temp==head)
+                head=head->next;
+            pre->next=temp->next;
+            delete(temp);
+            temp=pre->next;
+        }
+        //The last node remaining becomes the head of the Circular Linked List i.e. Winner
+        return head->val;
+    }
+    int findTheWinner(int n, int k) {
+        if(k==1)
+            return n;
+        //Designing Circular Linked List for Node 1,2,3,4,.....,n
+        ListNode *head=NULL,*tail=NULL;
+        for(int i=1; i<=n; i++){
+            ListNode *node=new ListNode(i);
+            if(head==NULL)
+                head=tail=node;
+            else{
+                tail->next=node;
+                tail=node;
+            }
+            tail->next=head;
+        }
+        //Helper function will eliminate the nodes and give us the winner
+        return helper(head,k);
+    }
+};
+
+2. Simple Solution : RECURSION
+/* Time Complexity : O(n)  Space Complexity : O(n) */
+This problem can also be solved using Recursion. If you observe, you can see that we are doing the same activity again and again i.e. deleting every kth element we encounter. Therefore, we can think towards the recursive approach also.
+Intution : If I have the winner for 'n-1' and 'k'. I can find the winner for 'n' and 'k' by moving on to the next kth person (i.e. f(n) = f(n-1)+k). Keeping in mind that they are sitting on a round table we have to rotate also (i.e. f(n) = (f(n-1)+k)%n).
+
+class Solution {
+public:
+    int helper(int n,int k){
+        if(n==1)
+            return 0;
+        return (helper(n-1,k) + k) % n;
+    }
+    int findTheWinner(int n, int k) {
+        return helper(n,k)+1;   //+1 is for converting 0-based indexing to 1-based indexing
+    }
+};
+Note : You might think that you have not taken any extra space in for the problem so the space complexity is O(1) but this is not true. The function calls are stored in the Stack memory of the machine and therefore these recursive calls end up making a Stack at the machine end. So, the Space Complexity for this program goes to O(n). INTERESTING HUH XD
+
+3. Optimised Solution : ITERATIVE APPROACH
+/* Time Complexity : O(n)  Space Complexity : O(1) */
+We can simply convert our Recursive Solution into Iterative Solution. This will bring no change in the Time Complexity but the Space Complexity will be optimised from O(n) to O(1). Our intution remains the same and looks very much similar to our Recursive Solution.
+
+class Solution {
+public:
+    int helper(int n,int k){
+        int ans = 0;
+        for(int i=1; i<=n; i++){
+            ans = (ans + k) % i;
+        }
+        return ans;
+    }
+    int findTheWinner(int n, int k) {
+        return helper(n,k)+1;   //+1 is for conterting 0-based indexing to 1-based indexing
+    }
+};
