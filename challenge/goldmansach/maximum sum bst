@@ -1,0 +1,43 @@
+Q-->link https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/description/
+class info{
+    public:
+    int ms;
+    int maxi;
+    int mini;
+    bool isbst;
+    info(){
+        ms=0;
+        mini=INT_MAX;
+        maxi=INT_MIN;
+        isbst=true;
+    }
+
+};
+class Solution {
+public:
+    int ans=0;
+    info solve(TreeNode* root){
+        if(root==NULL){
+            return info();
+        }
+        info node;
+        info nodeleft=solve(root->left);
+        info noderight=solve(root->right);
+        if(nodeleft.isbst && noderight.isbst && root->val > nodeleft.maxi && root->val < noderight.mini){
+            node.isbst = true;
+            node.ms = root->val + nodeleft.ms + noderight.ms;
+            node.mini = min(root->val,nodeleft.mini);
+            node.maxi = max(root->val,noderight.maxi);
+        }
+        else{
+            node.isbst = false;
+            node.ms = max(nodeleft.ms,noderight.ms);
+        }
+        ans = max(ans,node.ms);
+        return node;
+    }
+    int maxSumBST(TreeNode* root) {
+        solve(root);
+        return ans;
+    }
+};
