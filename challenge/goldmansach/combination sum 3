@@ -1,0 +1,26 @@
+q-->link https://leetcode.com/problems/combination-sum-iii/description/
+  class Solution {
+public:
+    vector<vector<int>> ans;
+
+    void f(vector<int>& curr,int currnum,int k,int n){
+        if(n<0 || curr.size()>k){
+            return ;
+        }
+        if(n==0 && curr.size()==k){
+            ans.push_back(curr);
+            return ;
+        }
+        for(int i=currnum;i<=9;++i){
+            curr.push_back(i);
+            f(curr,i+1,k,n-i);
+            curr.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<int>curr;
+        f(curr,1,k,n);
+        return ans;
+    }
+};
