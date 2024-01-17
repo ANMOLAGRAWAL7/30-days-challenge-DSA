@@ -1,0 +1,40 @@
+link-->https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/description/
+bool isPalin(string &s) {
+	int i = 0, j = s.length() - 1;
+	while(i < j) {
+		if(s[i] != s[j]) return false;
+		i++;
+		j--;
+	}
+	return true;
+}
+
+void dfs(string &s, int p, string &s1, string &s2, int &ans) {
+	if(p >= s.length()) {
+		if(isPalin(s1) && isPalin(s2)) {
+			int tmp = s1.length() * s2.length();
+			ans = max(ans, tmp);
+		}
+		return;
+	}
+	// Case 1: Not Pick
+	dfs(s, p + 1, s1, s2, ans);
+	
+	// Case 2: Pick -> 2 cases
+	// 2(a): Pick in 1st string
+	s1.push_back(s[p]);
+	dfs(s, p + 1, s1, s2, ans);
+	s1.pop_back();
+
+	// 2(b): Pick in 2nd string
+	s2.push_back(s[p]);
+	dfs(s, p + 1, s1, s2, ans);
+	s2.pop_back();
+}
+
+int maxProduct(string s) {
+	int ans = 0;
+	string s1 = "", s2 = "";
+	dfs(s, 0, s1, s2, ans);
+	return ans;
+}
