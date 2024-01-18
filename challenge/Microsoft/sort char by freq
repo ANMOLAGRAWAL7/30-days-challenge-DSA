@@ -1,0 +1,19 @@
+class Solution {
+public:
+    string frequencySort(string s) {
+        unordered_map<char,int>mp;
+        priority_queue<pair<int,int>>maxheap;
+        for(int i=0;i<s.length();i++){
+            mp[s[i]]++;
+        }
+        for(auto& it:mp){
+            maxheap.push({it.second,it.first});
+        }
+        string ans="";
+        while(!maxheap.empty()){
+            ans+=string(maxheap.top().first,maxheap.top().second);
+            maxheap.pop();
+        }
+        return ans;
+    }
+};
